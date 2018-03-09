@@ -1,4 +1,4 @@
-package algorithm;
+package baekjoon;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -6,10 +6,10 @@ import java.util.Scanner;
 
 class MainGearwheel {
 	private static ArrayList<LinkedList<Integer>> q;
-	private static final int CHAIN = 8;
+	private static final int GEAR = 8;
 	private static final int S = 1;
-	private static final int l = 6;
-	private static final int r = 2;
+	private static final int left = 6;
+	private static final int right = 2;
 
 	public static void main(String[] args) throws Exception {
 		int i;
@@ -21,7 +21,7 @@ class MainGearwheel {
 		for (i = 0; i < 4; i++) {
 			a = new LinkedList<>();
 			String temp = sc.nextLine();
-			for (int j = 0; j < CHAIN; j++) {
+			for (int j = 0; j < GEAR; j++) {
 				a.add(temp.charAt(j) - 48);
 			}
 			q.add(a);
@@ -61,7 +61,7 @@ class MainGearwheel {
 		if (num - 1 < 0)
 			return;
 
-		if (q.get(num).get(l) != q.get(num - 1).get(r)) {
+		if (q.get(num).get(left) != q.get(num - 1).get(right)) {
 			dir = dir == 1 ? -1 : 1;
 			rotateLeft(num - 1, dir);
 			int peekNum;
@@ -79,7 +79,7 @@ class MainGearwheel {
 		if ((num + 1) >= 4)
 			return;
 
-		if (q.get(num).get(r) != q.get(num + 1).get(l)) {
+		if (q.get(num).get(right) != q.get(num + 1).get(left)) {
 			dir = dir == 1 ? -1 : 1;
 			rotateRight(num + 1, dir);
 			int peekNum;
