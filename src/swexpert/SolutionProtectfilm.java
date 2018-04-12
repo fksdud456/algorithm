@@ -2,6 +2,7 @@ package swexpert;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -11,6 +12,8 @@ public class SolutionProtectfilm {
 	static int Answer;
 	static int D, W, K;
 	static int map[][];
+	static int a[];
+	static int b[];
 	static int MINCNT;
 	static boolean finish;
 
@@ -29,7 +32,11 @@ public class SolutionProtectfilm {
 			W = Integer.parseInt(st.nextToken());
 			K = Integer.parseInt(st.nextToken());
 			map = new int[D][W];
-
+			a = new int[W];
+			b = new int[W];
+			Arrays.fill(a, 0);
+			Arrays.fill(b, 1);
+			
 			for (int i = 0; i < D; i++) {
 				st = new StringTokenizer(br.readLine(), " ");
 				for (int j = 0; j < W; j++) {
@@ -37,7 +44,7 @@ public class SolutionProtectfilm {
 				}
 			}
 
-			if(!pass())
+			if (!pass())
 				dfs(0, 0);
 			else
 				MINCNT = 0;
@@ -47,54 +54,48 @@ public class SolutionProtectfilm {
 	}
 
 	private static void dfs(int depth, int min) {
-		if(min >= MINCNT)
+		if (min >= MINCNT)
 			return;
-		
+
 		if (depth == D) {
 			if (min != 0) {
-				if(pass() == true) {
+				if (pass() == true) {
 					MINCNT = MINCNT < min ? MINCNT : min;
 				}
 			}
 			return;
 		}
-		
+
 		dfs(depth + 1, min);
 
-		int tmp[] = new int[W];
-		
-		for (int i = 0; i < W; i++)
-			tmp[i] = map[depth][i];
+		int tmp[] = map[depth];
 
-		for (int i = 0; i < W; i++)
-			map[depth][i] = 0;
+		map[depth] = a;
 
 		dfs(depth + 1, min + 1);
 
-		for (int i = 0; i < W; i++)
-			map[depth][i] = 1;
+		map[depth] = b;
 
 		dfs(depth + 1, min + 1);
 
-		for (int i = 0; i < W; i++)
-			map[depth][i] = tmp[i];
+		map[depth] = tmp;
 	}
 
 	private static boolean pass() {
 		boolean isPass = true;
 		int passCnt;
 
-		row : for (int j = 0; j < W; j++) {
+		row: for (int j = 0; j < W; j++) {
 			passCnt = 0;
 			for (int i = 0; i < D - 1; i++) {
 				if (map[i][j] == map[i + 1][j])
 					passCnt++;
 				else
 					passCnt = 0;
-				
+
 				if (passCnt >= K - 1)
 					continue row;
-			}		
+			}
 
 			isPass = false;
 			break;
