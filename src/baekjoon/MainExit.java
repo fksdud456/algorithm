@@ -21,35 +21,37 @@ class Ball {
 		this.cnt = cnt;
 	}
 }
-public class Main {
+
+public class MainExit {
 	static int dx[] = { 1, -1, 0, 0 };
 	static int dy[] = { 0, 0, 1, -1 };
 	static int N, M;
 	static int min;
-	static char map[][];
-	static char END, EMPTY, HOLE, R, B;
+	static int map[][];
+	static int END, EMPTY, HOLE, R, B;
 	static int RX, RY, Bx, By;
-
+    static boolean visit[][][][];
 	public static void main(String[] args) throws Exception {
-		END = '#';
-		EMPTY =  '.';
-		HOLE = 'O';
-		R = 'R';
-		B =  'B';
+		END = (int)'#';
+		EMPTY =  (int)'.';
+		HOLE = (int)'O';
+		R = (int)'R';
+		B =  (int)'B';
 		min = -1;
 		InputStreamReader isr = new InputStreamReader(System.in);
 		BufferedReader br = new BufferedReader(isr);
+
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 
-		map = new char[N][M];
-
+		map = new int [N][M];
+		visit = new boolean[N][M][N][M];
 		String tmp = "";
 		for (int i = 0; i < N; i++) {
 			tmp = br.readLine();
 			for (int j = 0; j < M; j++) {
-				map[i][j] =  tmp.charAt(j);
+				map[i][j] =  (int)tmp.charAt(j);
 				if (map[i][j] == R) {
 					RX = i;
 					RY = j;
@@ -74,7 +76,7 @@ public class Main {
 		}
 
 		Ball tmp = null;
-		boolean res;
+
 		while (!q.isEmpty()) {
 			tmp = q.poll();
             
@@ -98,8 +100,11 @@ public class Main {
 				return;
 			}
 
-			for (int i = 0; i < 4; i++) {
-				q.add(new Ball(tmp.Rx, tmp.Ry, tmp.Bx, tmp.By, i, tmp.cnt + 1));
+			if(!visit[tmp.Rx][tmp.Ry][tmp.Bx][tmp.By]) {
+				visit[tmp.Rx][tmp.Ry][tmp.Bx][tmp.By] = true;
+				for (int i = 0; i < 4; i++) {
+					q.add(new Ball(tmp.Rx, tmp.Ry, tmp.Bx, tmp.By, i, tmp.cnt + 1));
+				}
 			}
 		}
 	}
@@ -107,8 +112,7 @@ public class Main {
 	private static void moveBlue(Ball tmp) {
 		int tx = tmp.Bx + (dx[tmp.dir]);
 		int ty = tmp.By + (dy[tmp.dir]);
-		
-		while (tx >= 1 && tx < N-1 && ty >= 1 && ty < M-1) {
+		while (tx >= 1 && tx < N-1 && ty >= 1 && ty < M-1) {            
 			if (map[tx][ty] == EMPTY) {
 				tmp.Bx = tx;
 				tmp.By = ty;
@@ -151,7 +155,7 @@ public class Main {
 	private static void moveRed(Ball tmp) {
 		int tx = tmp.Rx + (dx[tmp.dir]);
 		int ty = tmp.Ry + (dy[tmp.dir]);
-		while (tx >= 1 && tx < N-1 && ty >= 1 && ty < M-1) {
+		while (tx >= 1 && tx < N-1 && ty >=1 && ty < M-1) {
 			if (map[tx][ty] == EMPTY) {
 				tmp.Rx = tx;
 				tmp.Ry = ty;
