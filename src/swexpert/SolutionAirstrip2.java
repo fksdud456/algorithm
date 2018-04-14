@@ -60,7 +60,7 @@ public class SolutionAirstrip2 {
 		boolean result = true;
 
 		lineStart: for (int i = 0; i < N - 1; i++) {
-			if (Math.abs(line[i + 1]) - Math.abs(line[i]) > 1) {
+			if (Math.abs(line[i + 1] - line[i]) > 1) {
 				result = false;
 				break lineStart;
 			}
